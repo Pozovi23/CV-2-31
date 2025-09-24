@@ -314,7 +314,7 @@ def save_image(image: np.ndarray, output_path: Path) -> bool:
 
 
 def process_image_with_pose_detection(pose_detector : mp.solutions.pose.Pose,
-                                      image_src_path: Path | None = None,
+                                      image_input_path: Path | None = None,
                                       image_out_path: Path | None = None) -> np.ndarray:
     """
     Main function to process image and detect upper body pose.
@@ -323,7 +323,7 @@ def process_image_with_pose_detection(pose_detector : mp.solutions.pose.Pose,
     ----------
     pose_detector : mediapipe.solutions.pose.Pose
         Initialized pose detector object
-    image_src_path : Path or None
+    image_input_path : Path or None
         Path to input image or None for sample image
     image_out_path : Path or None
         Path to output image or None for auto-generated path
@@ -333,16 +333,16 @@ def process_image_with_pose_detection(pose_detector : mp.solutions.pose.Pose,
     np.ndarray
         Processed image with pose detection
     """
-    if image_src_path is not None and not image_src_path.exists():
-        raise FileNotFoundError(f"Image file '{image_src_path}' does not exist")
+    if image_input_path is not None and not image_input_path.exists():
+        raise FileNotFoundError(f"Image file '{image_input_path}' does not exist")
 
-    if image_src_path is not None and not isinstance(image_src_path, Path):
-        image_src_path = Path(image_src_path)
+    if image_input_path is not None and not isinstance(image_input_path, Path):
+        image_input_path = Path(image_input_path)
 
     if image_out_path is not None and not isinstance(image_out_path, Path):
         image_out_path = Path(image_out_path)
 
-    image = load_image(image_src_path)
+    image = load_image(image_input_path)
 
     custom_connections = create_custom_connections()
     drawing_specs = create_green_drawing_spec()
@@ -355,10 +355,10 @@ def process_image_with_pose_detection(pose_detector : mp.solutions.pose.Pose,
     draw_custom_pose_landmarks(image, landmarks, custom_connections, drawing_specs)
 
     if image_out_path is None:
-        image_out_path = get_output_path(image_src_path)
+        image_out_path = get_output_path(image_input_path)
 
     if image_out_path.is_dir():
-        image_out_path = image_out_path / f"{image_src_path.stem}_detected.png"
+        image_out_path = image_out_path / f"{image_input_path.stem}_detected.png"
 
     image_out_path.parent.mkdir(parents=True, exist_ok=True)
 

@@ -20,22 +20,26 @@ I decided to use mediapipe library. And it helped
 # How to use
 You should use `initialize_pose_detector()` and get `pose_detector`, `mp_drawing` and `mp_pose` from it.
 
-Using `with pose_detector:` you can call `process_image_with_pose_detection()`. 
+Using `with pose_detector:` you can call `process_image_with_pose_detection(pose_detector, input_path, output_path)`. 
 
 You can find samples in `test()` function
 
 ### Variants of output paths
 When input path is `None`:
 * {script_directory}/sample_result/astronaut_detected.png - for the sample astronaut image
+* Example: `process_image_with_pose_detection(pose_detector, None, None)` -> {script_directory}/sample_result/astronaut_detected.png
 
 When output path is `None`:
 * {input_directory}/{input_filename}_detected{input_extension}
+* Example: `process_image_with_pose_detection(pose_detector, "/home/a.jpg", None)` -> home/a_detected.jpg
 
 When output path is a directory:
-* {output_directory}/{input_filename}_detected.png
+* {output_directory}/{input_filename}_detected.png}
+* Example: `process_image_with_pose_detection(pose_detector, "/home/a.jpg", "/home")` -> home/a_detected.png
 
 For valid output math with extensions: .jpg, .jpeg, .png, .bmp, .tiff, .tif, .webp:
 * {output_path}
+* Example: `process_image_with_pose_detection(pose_detector, "/home/a.jpg", "/home/res.png")` -> home/res.png
 
 ---------------------
 
